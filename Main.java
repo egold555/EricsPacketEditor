@@ -1,5 +1,7 @@
 package org.golde.bukkit.sample;
 
+import java.lang.reflect.Field;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,9 +51,25 @@ public class Main extends JavaPlugin implements Listener{
 		
 		Bukkit.getLogger().info("Recieved " + packet.getClass().getSimpleName() + " to " + player.getName());
 		
-		//Example -- You can not write on signs
+		//Example -- Change all signs text
 		if(packet instanceof PacketPlayInUpdateSign) {
-			event.setCancelled();
+			PacketPlayInUpdateSign packetNew = (PacketPlayInUpdateSign) packet;
+			
+			try {
+				Field field = PacketPlayInUpdateSign.class.getDeclaredField("d");
+				
+				field.setAccessible(true);
+				
+				field.set(packetNew, new String[] {"Eric", "Doesn't", "Like", "Reflection"});
+				
+			} 
+			catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			
+			event.setPacket(packetNew);
+			
 		}
 	}
 
