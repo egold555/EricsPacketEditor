@@ -1,2 +1,2 @@
-# EricsPacketEditor-1.7.10
+# EricsPacketEditor
 A packet editor for minecraft bukkit plugins
